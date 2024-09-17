@@ -5,11 +5,6 @@ import { updateDeliveryAddress } from '../api/foodiegoAPI';
 import { useMyContext } from '../Security/ContextProvider';
 
 const AddressUpdateForm = ({isOpen, setIsOpen, address, setAddress, getAddresses, setIsAddressDeleted, idToUpdate}) => {
-//   const [formData, setFormData] = useState({
-//     street: '',
-//     area: '',
-//     city: ''
-//   });
     const context = useMyContext()
     const userData = context.userDetails
   const[isAddressUpdated, setIsAddressUpdated] = useState(false)

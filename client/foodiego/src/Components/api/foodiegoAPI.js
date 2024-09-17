@@ -17,12 +17,3 @@ export const placeOrder = (orderId) => apiClient.post(`/placeOrder`, null, { par
 export const getDeliveriesForUser = (email) => apiClient.get(`/getDeliveries`, { params :  { email }})
 export const idOrderThere = (userId, orderId) => apiClient.head(`/user/${userId}/cart/${orderId}`)
 export const retrieveCartTotal = (userId) => apiClient.get(`/user/${userId}/cart/cartTotal`)
-// export const retrieveAllToDosApi = (username) => apiClient.get(`/users/${username}/todos`)
-// export const retrieveTodoForIdApi = (username, id) => apiClient.get(`/users/${username}/todos/${id}`)
-// export const deleteToDoApi = (username, id) => apiClient.delete(`/users/${username}/todos/${id}`)
-// export const updateToDoApi = (username, id, todo) => apiClient.put(`/users/${username}/todos/${id}`, todo)
-// export const addToDoApi = (username, todo) => apiClient.post(`/users/${username}/todos`, todo)
-// export const authenticateApi = (token) => apiClient.get(`/basicAuth`, {
-//     headers:
-//             {Authorization : token }
-// })

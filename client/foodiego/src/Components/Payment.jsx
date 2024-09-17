@@ -35,7 +35,7 @@ const PaymentOptions = () => {
     { id: 'paypal', name: 'PayPal', icon: FaPaypal },
     
   ];
-  useEffect(()=>{console.log(addressAndOrders.orders+"*****************************************************")},[])
+  // useEffect(()=>{console.log(addressAndOrders.orders)},[])
 
   const handleMethodSelect = (id) => {
     setSelectedMethod(id);
