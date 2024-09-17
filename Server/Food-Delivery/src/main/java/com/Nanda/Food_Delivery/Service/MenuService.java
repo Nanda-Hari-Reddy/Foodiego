@@ -52,21 +52,12 @@ public class MenuService
 		{
 			Menu newMenu = new Menu();
 			newMenu.getFoodItemsList().add(foodItem);
-			System.out.println("*************************************************");
 			menu = MenuTransformer.requestToEntity(newMenu, restaurant);
-			System.out.println("*************************************************");
-
-//			restaurant.setMenu(menu);
-			System.out.println("*************************************************");
-
 			foodItem.setMenu(menu);
 			
 		}
-		System.out.println("*************************************************");
 
 		menuRepository.save(menu);
-		System.out.println("*************************************************");
-
 		return menu;
 	}
 

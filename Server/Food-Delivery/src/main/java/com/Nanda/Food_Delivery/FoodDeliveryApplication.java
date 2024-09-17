@@ -32,7 +32,7 @@ public class FoodDeliveryApplication
 	}
 	
 	@Bean
-    publicct Class<?> CustomerControllerClass() 
+    public Class<?> CustomerControllerClass() 
 	{
         return Class.class;
     }

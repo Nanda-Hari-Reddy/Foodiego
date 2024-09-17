@@ -28,7 +28,6 @@ public class DeliveryPersonRequest
 	
 	String phoneNo;
 
-	//@Enumerated( EnumType.STRING)
 	Gender gender;
 
 	int age;

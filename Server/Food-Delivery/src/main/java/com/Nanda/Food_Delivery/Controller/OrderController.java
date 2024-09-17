@@ -34,7 +34,6 @@ public class OrderController
 	public ResponseEntity<EntityModel<OrderResponse>> addOrder
 	(@RequestBody OrderRequest orderRequest, @PathVariable int foodItemId, @PathVariable int restaurantId)
 	{
-		System.out.println(orderRequest+"****************************************");
 		if(orderRequest==null) return new ResponseEntity(errorDetails, HttpStatus.NOT_ACCEPTABLE);
 		OrderResponse orderResponse = orderService.addOrder(orderRequest, foodItemId, restaurantId);
 //		URI location = ServletUriComponentsBuilder

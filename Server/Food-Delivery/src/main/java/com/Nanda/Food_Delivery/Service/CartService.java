@@ -74,7 +74,6 @@ public class CartService
 		double total = orders.stream().mapToDouble(Order_Entity::getTotalCost).sum();
 		Optional<Cart> cart = cartRepository.findByCustomerId(customerId);
 		cart.get().setCartTotal(total);
-		System.out.println("cart cartcart cart cart cartcart cart cart cart cart cart cart cart");
 		return total;
 	}
 }
