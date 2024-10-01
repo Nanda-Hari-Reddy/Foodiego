@@ -17,3 +17,5 @@ export const placeOrder = (orderId) => apiClient.post(`/placeOrder`, null, { par
 export const getDeliveriesForUser = (email) => apiClient.get(`/getDeliveries`, { params :  { email }})
 export const idOrderThere = (userId, orderId) => apiClient.head(`/user/${userId}/cart/${orderId}`)
 export const retrieveCartTotal = (userId) => apiClient.get(`/user/${userId}/cart/cartTotal`)
+export const addRestaurant = (restaurant) => apiClient.post(`/restaurants`, restaurant)
+export const retrieveRestaurantForAdmin  = (adminUserName) => apiClient.get(`/restaurants/${adminUserName}`)
