@@ -9,6 +9,10 @@ import PaymentOptions from "./Payment"
 import OrderDetails from "./YourOrderDetails"
 import { BrowserRouter, Navigate, Route, Routes, useParams } from "react-router-dom"
 import ContextProvider, { useMyContext } from "./Security/ContextProvider"
+import RestaurantAddSuccess from "./RestaurantAddSuccess"
+import MyRestaurant from "./MyRestaurant"
+import EditMyRestaurant from "./AddFoodItemToMenu"
+import AddRestaurant from "./AddRestaurant"
 
 
 const AuthenticatdRoute = ({ children }) =>
@@ -32,8 +36,11 @@ const FoodieGo = () =>
                 <HeaderComponent />
                 <Routes>
                         <Route>
-                            <Route path="/" element={< Login />}/>
+                            <Route path="/foodiego" element={< Login />}/>
                             <Route path="/login" element={< Login />}/>
+                            <Route path="/addRestaurant" element = {<AddRestaurant />} />
+                            <Route path="/foodiego/myrestaurant" element={< MyRestaurant  />}/>
+                            <Route path="//addRestaurant/RestaurantAdded" element = {<RestaurantAddSuccess />} />
                             <Route path="/foodieGo/home" element={<AuthenticatdRoute><HomePage /></AuthenticatdRoute>}/>
                             <Route path="/foodieGo/restaurant/:restaurantId" element={<AuthenticatdRoute><Restaurant restaurantId={restaurantId}/></AuthenticatdRoute>}/>
                             <Route path="/foodieGo/cart" element={<AuthenticatdRoute><Cart/></AuthenticatdRoute>}/>
