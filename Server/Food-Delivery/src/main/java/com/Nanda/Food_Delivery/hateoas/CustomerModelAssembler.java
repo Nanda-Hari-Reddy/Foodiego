@@ -46,7 +46,7 @@ public class CustomerModelAssembler extends RepresentationModelAssemblerSupport<
 		case "update","create":
 						{
 							entityModel = EntityModel.of(customerResponse,
-									linkTo(methodOn(CustomerController.class).retrieveCustomer(customerResponse.getEmail())).withSelfRel(),
+									linkTo(methodOn(CustomerController.class).retrieveCustomer(customerResponse.getEmail())).withSelfRel(),  
 									linkTo(methodOn(CustomerController.class).deleteCustomer(customerResponse.getId())).withRel("delete"),
 									linkTo(methodOn(CustomerController.class).retrieveAllCustomers()).withRel("all_customers"));
 							return entityModel;

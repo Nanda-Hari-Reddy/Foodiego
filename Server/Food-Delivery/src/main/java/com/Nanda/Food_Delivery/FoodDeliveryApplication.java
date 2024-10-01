@@ -20,7 +20,7 @@ public class FoodDeliveryApplication
 			public void addCorsMappings(CorsRegistry registry)
 			{
 				registry.addMapping("/**")
-				.allowedMethods("*")
+		 		.allowedMethods("*")
 				.allowedOrigins("http://localhost:3000");
 			}
 		};
@@ -32,7 +32,7 @@ public class FoodDeliveryApplication
 	}
 	
 	@Bean
-    public Class<?> CustomerControllerClass() 
+    public Class<?> CustomerControllerClass()
 	{
         return Class.class;
     }

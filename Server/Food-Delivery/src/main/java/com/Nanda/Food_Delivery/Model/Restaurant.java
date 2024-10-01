@@ -1,7 +1,10 @@
 package com.Nanda.Food_Delivery.Model;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.validator.constraints.UniqueElements;
 
 import com.Nanda.Food_Delivery.enums.Opened;
 import com.Nanda.Food_Delivery.enums.RestarauntCategory;
@@ -45,8 +48,9 @@ public class Restaurant
 	String imageURL;
 
 	@NotBlank(message = "Hotel Name Must not be empty")
+	@Column(unique = true)
 	String restaurantName;
-
+	
 	@NotBlank(message = "Location Must not be empty")
 	String location;
 
@@ -63,6 +67,13 @@ public class Restaurant
 	@OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL)
 	@ToString.Exclude
     Menu menu;
+	
+	LocalTime opens;
+	
+	LocalTime closes;
+	
+	@OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL)
+	RestaurantAdmin admin;
 
 	@Builder.Default
 	@JsonIgnore

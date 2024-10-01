@@ -28,6 +28,15 @@ public class RestaurantModelAssembler extends RepresentationModelAssemblerSuppor
 		EntityModel<RestaurantResponse> entityModel;
 		switch (key) 
 		{
+		
+		case "create" : 
+							{
+								entityModel = EntityModel.of(entity, linkTo(methodOn(RestaurantController.class).findRestaurantById(entity.getId())).withSelfRel(),
+																	 linkTo(methodOn(RestaurantController.class).UpdateRestaurant(entity.getId(), null)).withRel("update"),
+																	 linkTo(methodOn(RestaurantController.class).findAllRestaurants()).withRel("all_restaurants"),
+																	 linkTo(methodOn(MenuController.class).getMenu(entity.getId())).withRel("menu"));
+								return entityModel;
+							}
 			case "GetOne" : 
 							{
 								entityModel = EntityModel.of(entity, linkTo(methodOn(RestaurantController.class).findRestaurantById(entity.getId())).withSelfRel(),

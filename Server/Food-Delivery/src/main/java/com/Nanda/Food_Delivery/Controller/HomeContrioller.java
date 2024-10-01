@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Nanda.Food_Delivery.Model.FoodItem;
 import com.Nanda.Food_Delivery.Service.FoodItemService;
 import com.Nanda.Food_Delivery.Service.RestaurantService;
 import com.Nanda.Food_Delivery.dtoResponse.FoodResponse;
@@ -25,7 +24,7 @@ public class HomeContrioller
 	RestaurantService restaurantService;
 	@Autowired
 	FoodItemService foodItemService;
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@GetMapping
 	public ResponseEntity<Map<FoodResponse, Object>> retrievedataForHomePage()
 	{

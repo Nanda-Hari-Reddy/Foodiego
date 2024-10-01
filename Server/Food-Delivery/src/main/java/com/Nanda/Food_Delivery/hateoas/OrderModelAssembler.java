@@ -23,7 +23,7 @@ public class OrderModelAssembler extends RepresentationModelAssemblerSupport<Ord
 	{
 		EntityModel<OrderResponse> entityModel;
 		entityModel = EntityModel.of(entity, linkTo(methodOn(CartController.class).retrieveOrderInCart(entity.getCustomerId(), entity.getOrderId())).withSelfRel(),
-				 linkTo(methodOn(CartController.class).deleteOrder(entity.getOrderId())).withRel("delete"),
+				 linkTo(methodOn(CartController.class).deleteOrder(entity.getCustomerId(), entity.getOrderId())).withRel("delete"),
 				 linkTo(methodOn(CartController.class).retrieveCart(entity.getCustomerId())).withRel("all_orders"));
 		return entityModel;
 	}

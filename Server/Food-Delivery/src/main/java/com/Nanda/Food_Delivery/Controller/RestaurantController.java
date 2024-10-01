@@ -75,6 +75,13 @@ public class RestaurantController
 		return new ResponseEntity<>(entityModelCollection, HttpStatus.ACCEPTED);
 		
 	}
+	
+	@GetMapping(path = "/{adminusername}")
+	public ResponseEntity<RestaurantResponse> findRestaurantByAdmin(@PathVariable String adminusername)
+	{
+		RestaurantResponse restaurantResponse = restaurantService.getRestautantByAdmin(adminusername);
+		return new ResponseEntity<>(restaurantResponse, HttpStatus.ACCEPTED);
+	}
 
 	@GetMapping(path = "/{restaurantId}")
 	public ResponseEntity<EntityModel<RestaurantResponse>> findRestaurantById(@PathVariable int restaurantId)

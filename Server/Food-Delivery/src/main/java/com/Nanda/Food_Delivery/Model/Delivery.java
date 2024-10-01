@@ -1,6 +1,5 @@
 package com.Nanda.Food_Delivery.Model;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;

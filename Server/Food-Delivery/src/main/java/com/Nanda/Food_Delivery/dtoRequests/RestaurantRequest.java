@@ -1,6 +1,7 @@
 package com.Nanda.Food_Delivery.dtoRequests;
 
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,14 @@ public class RestaurantRequest
 	RestarauntCategory restaurantCategory;
 
 	String contactNumber;
-
-	@JsonIgnore
-	Opened opened = Opened.OPENED;
+	
+	LocalTime opens;
+	
+	LocalTime closes;
+	
+	String adminUserName;
+	
+	String password;
 
 	@JsonIgnore
 	@ToString.Exclude

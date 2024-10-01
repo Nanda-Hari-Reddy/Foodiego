@@ -12,13 +12,16 @@ import org.springframework.stereotype.Service;
 
 import com.Nanda.Food_Delivery.Model.Order_Entity;
 import com.Nanda.Food_Delivery.Model.Restaurant;
+import com.Nanda.Food_Delivery.Model.RestaurantAdmin;
 import com.Nanda.Food_Delivery.Repository.OrderRepository;
+import com.Nanda.Food_Delivery.Repository.RestaurantAdminRepository;
 import com.Nanda.Food_Delivery.Repository.RestaurantRepository;
 import com.Nanda.Food_Delivery.Transformer.FoodItemTransformer;
 import com.Nanda.Food_Delivery.Transformer.RestaurantTransformer;
 import com.Nanda.Food_Delivery.dtoRequests.RestaurantRequest;
 import com.Nanda.Food_Delivery.dtoResponse.FoodResponse;
 import com.Nanda.Food_Delivery.dtoResponse.RestaurantResponse;
+import com.Nanda.Food_Delivery.exception.RestaurantAdminNotFoundException;
 import com.Nanda.Food_Delivery.exception.RestaurantNotFoundException;
 
 @Service
@@ -27,21 +30,28 @@ public class RestaurantService
 	RestaurantRepository restaurantRepository;
 	OrderRepository orderRepository;
 	CartService cartService;
-	
-	public RestaurantService(RestaurantRepository restaurantRepository, CartService cartService, OrderRepository orderRepository) 
+	RestaurantAdminRepository adminRepository;
+	public RestaurantService(RestaurantRepository restaurantRepository, CartService cartService, OrderRepository orderRepository, RestaurantAdminRepository adminRepository) 
 	{
 		this.restaurantRepository = restaurantRepository;
 		this.cartService = cartService;
 		this.orderRepository = orderRepository;
+		this.adminRepository = adminRepository;
 	}
 
 	public RestaurantResponse addRestaurant(RestaurantRequest restaurantRequest)
 	{
-
+		
+		 RestaurantAdmin admin = RestaurantAdmin.builder()
+				 		   .userName(restaurantRequest.getAdminUserName())
+				 		   .password(restaurantRequest.getPassword())
+				 		   .build();
+		 
 		 Restaurant restaurant =  RestaurantTransformer
-				 				  .requestToEntity(restaurantRequest);
+				 				  .requestToEntity(restaurantRequest, admin);
 		 Restaurant saved = restaurantRepository.save(restaurant);
-
+		 admin.setRestaurant(restaurant);
+		 adminRepository.save(admin);
 		 return getRestautantById(saved.getId());
 	}
 
@@ -66,10 +76,28 @@ public class RestaurantService
 												.entityToResponse(restaurant.get());
 		return restaurantResponse;
 	}
+	
+	public RestaurantResponse getRestautantByAdmin(String adminusername) 
+	{
+		Optional<RestaurantAdmin> restaurantAdmin = adminRepository.findByUserName(adminusername);
+		if(restaurantAdmin.isEmpty()) throw new RestaurantAdminNotFoundException("No admin found with username "+adminusername);
+		
+		Optional<Restaurant> restaurant = restaurantRepository.findByAdmin(restaurantAdmin.get());
+		if(restaurant.isEmpty()) throw new RestaurantNotFoundException("No Restaurant found with admin "+ adminusername);
+		RestaurantResponse restaurantResponse = RestaurantTransformer
+												.entityToResponseForAdmin(restaurant.get());
+		return restaurantResponse;
+	}
 
 	public RestaurantResponse updateRestaurant(int restaurantId, RestaurantRequest restaurantRequest)
 	{
-		Restaurant restaurant = RestaurantTransformer.requestToEntity(restaurantRequest);
+		RestaurantAdmin admin = RestaurantAdmin.builder()
+		 		   .userName(restaurantRequest.getAdminUserName())
+		 		   .password(restaurantRequest.getPassword())
+		 		   .build();
+		
+		Restaurant restaurant = RestaurantTransformer.requestToEntity(restaurantRequest, admin);
+		admin.setRestaurant(restaurant);
 		restaurant.setId(restaurantId);
 		Optional<Restaurant> rsnt = restaurantRepository.findById(restaurantId);
 		
@@ -126,4 +154,5 @@ public class RestaurantService
 								  .collect(Collectors.toList());
 		return itemResponses;
 	}
+
 }

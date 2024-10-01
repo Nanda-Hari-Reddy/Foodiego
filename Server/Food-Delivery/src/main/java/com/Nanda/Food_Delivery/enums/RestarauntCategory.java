@@ -17,6 +17,7 @@ public enum RestarauntCategory
     HEALTHY_FOOD,
     BIRYANI,
     SWEETS,
-    PUNJABI
+    PUNJABI,
+    OTHERS
     
 }
