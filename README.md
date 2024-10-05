@@ -16,4 +16,4 @@
 > 5. Dependencies
      --> All dependencies are installed in pom.xml
      --> To use mysql you have to have the MySql WorkBench in Local Machine
-     --> To uses Lombok you need to install Lambok jar and map it to the Spring tools or(uour IDE)
+     --> To uses Lombok you need to install Lambok jar and map it to the Spring tools or(your IDE)
