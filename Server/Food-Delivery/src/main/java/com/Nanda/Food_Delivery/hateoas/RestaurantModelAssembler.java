@@ -46,6 +46,14 @@ public class RestaurantModelAssembler extends RepresentationModelAssemblerSuppor
 																	 linkTo(methodOn(MenuController.class).getMenu(entity.getId())).withRel("menu"));
 								return entityModel;
 							}
+			case "GetOneForAdmin" : 
+			{
+				entityModel = EntityModel.of(entity, linkTo(methodOn(RestaurantController.class).findRestaurantById(entity.getId())).withSelfRel(),
+													 linkTo(methodOn(RestaurantController.class).UpdateRestaurant(entity.getId(), null)).withRel("update"),
+													 linkTo(methodOn(RestaurantController.class).deleteRestaurant(entity.getId())).withRel("delete"),
+													 linkTo(methodOn(MenuController.class).getMenu(entity.getId())).withRel("menu"));
+				return entityModel;
+			}
 			case "update" : 
 							{
 								entityModel = EntityModel.of(entity, linkTo(methodOn(RestaurantController.class).findRestaurantById(entity.getId())).withSelfRel(),

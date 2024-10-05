@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, frameData } from "framer-motion";
+import { addFoodItemToMenu } from "./api/foodiegoAPI";
 
-const AddFoodItemToMenu = ({isOpen, setIsOpen}) => {
-  // const [isOpen, setIsOpen] = useState(false);
+const AddFoodItemToMenu = ({isOpen, setIsOpen, restaurantId, setIsMenuUpdated}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    description: "",
-    price: "",
+    category: "",
+    price: 0,
     imageURL: '',
   });
   const [errors, setErrors] = useState({});
@@ -28,8 +28,8 @@ const AddFoodItemToMenu = ({isOpen, setIsOpen}) => {
       case "name":
         error = value.trim() === "" ? "Name is required" : "";
         break;
-      case "description":
-        error = value.trim() === "" ? "Description is required" : "";
+      case "category":
+        error = value.trim() === "" ? "category is required" : "";
         break;
       case "price":
         error =
@@ -56,8 +56,21 @@ const AddFoodItemToMenu = ({isOpen, setIsOpen}) => {
 
     if (Object.keys(formErrors).length === 0) {
       setIsLoading(true);
-      // Simulating API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const foodItem = {
+          imageURL : formData.imageURL,
+          dishName : formData.name,
+          price : parseFloat(formData.price),
+          category : formData.category
+      }
+      console.log(foodItem)
+      addFoodItemToMenu(foodItem, restaurantId)
+      .then( (response) => { 
+                              console.log(response)
+                              setIsMenuUpdated(true)
+                            })
+      .catch( (error) => console.log(error) )
+
       setIsLoading(false);
       setIsOpen(false);
       setFormData({ name: "", description: "", price: "", image: null });
@@ -116,25 +129,26 @@ const AddFoodItemToMenu = ({isOpen, setIsOpen}) => {
                 </div>
                 <div className="mb-4">
                   <label
-                    htmlFor="description"
+                    htmlFor="category"
                     className="block text-gray-700 font-bold mb-2"
                   >
-                    Description
+                    Category
                   </label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    value={formData.description}
+                  <input
+                    type="text"
+                    id="category"
+                    name="category"
+                    value={formData.category}
                     onChange={handleInputChange}
                     className={`w-full px-3 py-2 border rounded-lg ${
                       errors.description ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Enter food item description"
+                    placeholder="category"
                     rows="3"
-                  ></textarea>
-                  {errors.description && (
+                  ></input>
+                  {errors.category && (
                     <p className="text-red-500 text-sm mt-1">
-                      {errors.description}
+                      {errors.category}
                     </p>
                   )}
                 </div>

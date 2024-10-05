@@ -1,11 +1,28 @@
 package com.Nanda.Food_Delivery.Transformer;
+import java.util.function.Function;
+
+import com.Nanda.Food_Delivery.Model.Menu;
 import com.Nanda.Food_Delivery.Model.Restaurant;
 import com.Nanda.Food_Delivery.Model.RestaurantAdmin;
 import com.Nanda.Food_Delivery.dtoRequests.RestaurantRequest;
+import com.Nanda.Food_Delivery.dtoResponse.MenuResponse;
 import com.Nanda.Food_Delivery.dtoResponse.RestaurantResponse;
 
 public class RestaurantTransformer
 {
+	public static Restaurant requestToEntity(RestaurantRequest request)
+    {
+         return Restaurant.builder()
+                 .restaurantName(request.getRestaurantName())
+                 .contactNumber(request.getContactNumber())
+                 .location(request.getLocation())
+                 .restaurantCategory(request.getRestaurantCategory())
+                 .imageURL(request.getImageURL())
+                 .opens(request.getOpens())
+                 .closes(request.getCloses())
+                 .build();
+    }
+	
     public static Restaurant requestToEntity(RestaurantRequest request, RestaurantAdmin admin)
     {
          return Restaurant.builder()
@@ -37,6 +54,7 @@ public class RestaurantTransformer
     
     public static RestaurantResponse entityToResponseForAdmin(Restaurant entity)
     {
+    	System.out.println(entity.getMenu()+"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         return RestaurantResponse.builder()
         		.id(entity.getId())
                 .restaurantName(entity.getRestaurantName())
@@ -47,7 +65,9 @@ public class RestaurantTransformer
                 .imageURL(entity.getImageURL())
                 .opens(entity.getOpens())
                 .closes(entity.getCloses())
-                .admin(entity.getAdmin())
+                .adminUserName(entity.getAdmin().getUserName())
+                .adminPassword(entity.getAdmin().getPassword())
+                .menuResponse(MenuTransformer.entityToResponse(entity.getMenu()))
                 .build();
     }
 }

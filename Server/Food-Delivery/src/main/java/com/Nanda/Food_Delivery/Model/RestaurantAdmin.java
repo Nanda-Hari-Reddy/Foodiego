@@ -1,13 +1,5 @@
 package com.Nanda.Food_Delivery.Model;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.Nanda.Food_Delivery.enums.Opened;
-import com.Nanda.Food_Delivery.enums.RestarauntCategory;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 @Entity
@@ -37,5 +30,6 @@ public class RestaurantAdmin
 	String password;
 	
 	@OneToOne
+	@ToString.Exclude
 	Restaurant restaurant;
 }

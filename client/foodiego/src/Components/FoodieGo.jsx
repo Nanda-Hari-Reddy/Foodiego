@@ -11,8 +11,8 @@ import { BrowserRouter, Navigate, Route, Routes, useParams } from "react-router-
 import ContextProvider, { useMyContext } from "./Security/ContextProvider"
 import RestaurantAddSuccess from "./RestaurantAddSuccess"
 import MyRestaurant from "./MyRestaurant"
-import EditMyRestaurant from "./AddFoodItemToMenu"
 import AddRestaurant from "./AddRestaurant"
+import RestaurantAdminLoginPage from "./RestaurantAdminLoginPage"
 
 
 const AuthenticatdRoute = ({ children }) =>
@@ -39,8 +39,9 @@ const FoodieGo = () =>
                             <Route path="/foodiego" element={< Login />}/>
                             <Route path="/login" element={< Login />}/>
                             <Route path="/addRestaurant" element = {<AddRestaurant />} />
+                            <Route path="/foodiego/restaurantlogin" element={< RestaurantAdminLoginPage  />}/>
                             <Route path="/foodiego/myrestaurant" element={< MyRestaurant  />}/>
-                            <Route path="//addRestaurant/RestaurantAdded" element = {<RestaurantAddSuccess />} />
+                            <Route path="/addRestaurant/RestaurantAdded" element = {<RestaurantAddSuccess />} />
                             <Route path="/foodieGo/home" element={<AuthenticatdRoute><HomePage /></AuthenticatdRoute>}/>
                             <Route path="/foodieGo/restaurant/:restaurantId" element={<AuthenticatdRoute><Restaurant restaurantId={restaurantId}/></AuthenticatdRoute>}/>
                             <Route path="/foodieGo/cart" element={<AuthenticatdRoute><Cart/></AuthenticatdRoute>}/>

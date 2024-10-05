@@ -4,7 +4,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.validator.constraints.UniqueElements;
 
 import com.Nanda.Food_Delivery.enums.Opened;
 import com.Nanda.Food_Delivery.enums.RestarauntCategory;
@@ -73,6 +72,7 @@ public class Restaurant
 	LocalTime closes;
 	
 	@OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL)
+	@ToString.Exclude
 	RestaurantAdmin admin;
 
 	@Builder.Default

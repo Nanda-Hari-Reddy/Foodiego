@@ -18,6 +18,7 @@ import com.Nanda.Food_Delivery.Repository.RestaurantAdminRepository;
 import com.Nanda.Food_Delivery.Repository.RestaurantRepository;
 import com.Nanda.Food_Delivery.Transformer.FoodItemTransformer;
 import com.Nanda.Food_Delivery.Transformer.RestaurantTransformer;
+import com.Nanda.Food_Delivery.dtoRequests.RestaurantAdminRequest;
 import com.Nanda.Food_Delivery.dtoRequests.RestaurantRequest;
 import com.Nanda.Food_Delivery.dtoResponse.FoodResponse;
 import com.Nanda.Food_Delivery.dtoResponse.RestaurantResponse;
@@ -86,24 +87,26 @@ public class RestaurantService
 		if(restaurant.isEmpty()) throw new RestaurantNotFoundException("No Restaurant found with admin "+ adminusername);
 		RestaurantResponse restaurantResponse = RestaurantTransformer
 												.entityToResponseForAdmin(restaurant.get());
+//		System.out.println(restaurantResponse.getMenuResponse().getFoodItemsList()+"####################################");
 		return restaurantResponse;
 	}
 
 	public RestaurantResponse updateRestaurant(int restaurantId, RestaurantRequest restaurantRequest)
 	{
-		RestaurantAdmin admin = RestaurantAdmin.builder()
-		 		   .userName(restaurantRequest.getAdminUserName())
-		 		   .password(restaurantRequest.getPassword())
-		 		   .build();
-		
-		Restaurant restaurant = RestaurantTransformer.requestToEntity(restaurantRequest, admin);
-		admin.setRestaurant(restaurant);
-		restaurant.setId(restaurantId);
 		Optional<Restaurant> rsnt = restaurantRepository.findById(restaurantId);
-		
 		if(rsnt.isEmpty()) throw new RestaurantNotFoundException("No restaurant found with id "+restaurantId);
+		RestaurantAdmin admin = rsnt.get().getAdmin();
+		Restaurant restaurant = RestaurantTransformer.requestToEntity(restaurantRequest);
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "+ admin);
+		
+		admin.setUserName(restaurantRequest.getAdminUserName());
+		admin.setPassword(restaurantRequest.getPassword());
+		restaurant.setId(restaurantId);
+		restaurant.setAdmin(admin);
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "+ restaurantRequest);
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% "+ restaurant);
 		restaurantRepository.save(restaurant);
-		RestaurantResponse restaurantResponse = RestaurantTransformer.entityToResponse(restaurant);
+		RestaurantResponse restaurantResponse = RestaurantTransformer.entityToResponseForAdmin(restaurant);
 		return restaurantResponse;
 	}
 
@@ -153,6 +156,15 @@ public class RestaurantService
 								  .map(itemsToResponses)
 								  .collect(Collectors.toList());
 		return itemResponses;
+	}
+	
+	public boolean validateAdmin(RestaurantAdminRequest adminRequest)
+	{
+		Optional<RestaurantAdmin> admin = adminRepository.findByUserName(adminRequest.getUserName());
+		System.out.println(adminRequest.getUserName()+"aaaaaaaaaaaaaaa");
+		if(admin.isEmpty()) throw new RestaurantAdminNotFoundException("No admin found with this username");
+		if(admin.get().getPassword().equals(adminRequest.getPassword())) return true;
+		else return false;
 	}
 
 }

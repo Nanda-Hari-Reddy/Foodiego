@@ -51,6 +51,8 @@ public class MenuController
 	@PostMapping
 	public ResponseEntity<Menu> addMenu(@RequestBody MenuRequest menuRequest, @PathVariable int restaurantId)
 	{
+		System.out.println(menuRequest+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
 		if(menuRequest==null) return new ResponseEntity(errorDetails, HttpStatus.NOT_ACCEPTABLE);
 
 		Menu menu = menuService.addFoodItemsToMenu(menuRequest, restaurantId);

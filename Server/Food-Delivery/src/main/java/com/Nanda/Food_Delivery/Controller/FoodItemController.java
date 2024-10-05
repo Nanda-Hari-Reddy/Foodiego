@@ -44,7 +44,7 @@ public class FoodItemController
 	public ResponseEntity<EntityModel<FoodResponse>> UpdateFoodItem(@PathVariable int restaurantId, @PathVariable int foodItemId,  @RequestBody Map<String, Object> updates) 
 	{
 		if(updates==null) return new ResponseEntity(errorDetails, HttpStatus.NOT_ACCEPTABLE);
-
+		System.out.println(updates+" updatessssssssssssssssssssssssssssssssssssssssssssssssssss");
 		FoodResponse foodItemResponse = foodItemService.updateFoodItem(foodItemId, updates);
 		EntityModel<FoodResponse> entityModel = modelAssembler.toModel(foodItemResponse, "update");
 		return ResponseEntity

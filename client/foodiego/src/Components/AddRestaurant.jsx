@@ -5,8 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { addRestaurant } from "./api/foodiegoAPI";
+import { useMyContext } from "./Security/ContextProvider";
 const AddRestaurant = () => {
 
+  const context = useMyContext()
+  context.setIsAdminAuthenticated(false)
   const [formData, setFormData] = useState({
     name: "",
     adminUserName:"",
@@ -62,6 +65,9 @@ const AddRestaurant = () => {
       try {
             const response = await addRestaurant(restaurant)
             console.log(response)
+            console.log(context)
+            context.setAdmin(restaurant.adminUserName)
+            context.setIsAdminAuthenticated(true)
             navigate(`/addRestaurant/RestaurantAdded`)
       } catch (error) {
         console.log(error)

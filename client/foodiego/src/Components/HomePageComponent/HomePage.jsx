@@ -12,6 +12,7 @@ import { retrieveDataForHomePage } from '../api/foodiegoAPI';
 const HomePage = () => {
 
   const context = useMyContext()
+  context.setIsAdminAuthenticated(false)
   const theme = context.theme
   const [restaurants, setRestaurants] = useState([])
   const [foods, setFoods] = useState([])
@@ -73,8 +74,8 @@ const HomePage = () => {
                 ))}
             </div>
         </section>
-
           <section className="mb-12" aria-labelledby="popular-cuisines">
+
             <h2 id="popular-cuisines" className="text-2xl font-bold mb-4">Popular Cuisines</h2>
             <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-6">
               {cuisines.map((cuisine, index) => (

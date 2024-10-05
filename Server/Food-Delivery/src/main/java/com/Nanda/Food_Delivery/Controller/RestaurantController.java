@@ -5,6 +5,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
@@ -19,15 +20,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Nanda.Food_Delivery.Service.RestaurantService;
+import com.Nanda.Food_Delivery.dtoRequests.RestaurantAdminRequest;
 import com.Nanda.Food_Delivery.dtoRequests.RestaurantRequest;
 import com.Nanda.Food_Delivery.dtoResponse.FoodResponse;
 import com.Nanda.Food_Delivery.dtoResponse.RestaurantResponse;
 import com.Nanda.Food_Delivery.exception.ErrorDetails;
 import com.Nanda.Food_Delivery.hateoas.RestaurantModelAssembler;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.websocket.server.PathParam;
 
 
 @RestController
@@ -76,11 +84,12 @@ public class RestaurantController
 		
 	}
 	
-	@GetMapping(path = "/{adminusername}")
-	public ResponseEntity<RestaurantResponse> findRestaurantByAdmin(@PathVariable String adminusername)
+	@GetMapping(path = "/restaurantforadmin/{adminusername}")
+	public ResponseEntity<EntityModel<RestaurantResponse>> findRestaurantByAdmin(@PathVariable String adminusername)
 	{
 		RestaurantResponse restaurantResponse = restaurantService.getRestautantByAdmin(adminusername);
-		return new ResponseEntity<>(restaurantResponse, HttpStatus.ACCEPTED);
+		EntityModel<RestaurantResponse> entityModel = modelAssembler.toModel(restaurantResponse, "GetOneForAdmin");
+		return new ResponseEntity<>(entityModel, HttpStatus.ACCEPTED);
 	}
 
 	@GetMapping(path = "/{restaurantId}")
@@ -116,11 +125,30 @@ public class RestaurantController
 		return new ResponseEntity<>(entityModel, HttpStatus.ACCEPTED); 
 	}
 	@PatchMapping(path = "{restaurantId}")
-	public ResponseEntity<EntityModel<RestaurantResponse>> updateProfilePicture(@PathVariable int restaurantId, String imageURL)
+	public ResponseEntity<EntityModel<RestaurantResponse>> updateProfilePicture(@PathVariable int restaurantId, @PathParam("imageURL") String imageURL)
 	{
 		RestaurantResponse restaurantResponse = restaurantService.updateProfilePic(restaurantId, imageURL);
 		EntityModel<RestaurantResponse> entityModel = modelAssembler.toModel(restaurantResponse, "update");
 		return new ResponseEntity<>(entityModel, HttpStatus.ACCEPTED);
 	}
 	
+	@RequestMapping(value = "/resaurantadmin", method = RequestMethod.HEAD)
+	public ResponseEntity<Void> validateRestarantAdmin(@RequestHeader("restaurantAdmin") String adminRequestString)
+	{
+		ObjectMapper objectMapper = new ObjectMapper();
+		RestaurantAdminRequest adminRequest;
+		try {
+//				RestaurantRequest adminRequest = new RestaurantRequest();
+				adminRequest = objectMapper.readValue(adminRequestString, new TypeReference<RestaurantAdminRequest>(){});
+				System.out.println(adminRequest+"admin Requestttttttttttttttttttttttttttttttt");
+		} catch (Exception e) {
+			 e.printStackTrace();
+	         return ResponseEntity.badRequest().build();
+		}
+		if(restaurantService.validateAdmin(adminRequest))
+		{
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
 }

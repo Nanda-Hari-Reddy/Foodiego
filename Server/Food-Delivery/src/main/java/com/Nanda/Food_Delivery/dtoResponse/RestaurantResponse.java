@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.Nanda.Food_Delivery.Model.Order_Entity;
-import com.Nanda.Food_Delivery.Model.RestaurantAdmin;
 import com.Nanda.Food_Delivery.enums.Opened;
 import com.Nanda.Food_Delivery.enums.RestarauntCategory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -52,7 +51,9 @@ public class RestaurantResponse
 	@ToString.Exclude
 	MenuResponse menuResponse;
 	
-	RestaurantAdmin admin;
+	String adminUserName;
+	
+	String adminPassword;
 
 	@JsonIgnore
 	@Builder.Default

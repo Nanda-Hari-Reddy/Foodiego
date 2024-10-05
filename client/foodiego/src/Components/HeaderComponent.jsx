@@ -12,7 +12,6 @@ const HeaderComponent = () =>
     
     const [searchTerm, setSearchTerm] = useState('');
     const context = useMyContext()
-    console.log(context+'ddddd')
     const theme = context.theme
     const setTheme = context.setTheme
     const handleSearch = (e) => {
@@ -61,10 +60,10 @@ const HeaderComponent = () =>
                         className={`${theme ? 'bg-black text-white' : 'bg-white text-black'} px-4 py-2 rounded`}
                         aria-label="Toggle high contrast mode">{theme ? <BsFillMoonFill /> : <BsFillMoonFill /> }</button></li> }
                     </ul>
-                    <ul className='flex space-x-4 mt-5 mr-10 font-bold text-lg'>
-                        <Link to='/addRestaurant'><li>Add Restaurant</li></Link>
-                        <Link><li >My Restaurant</li></Link>
-                    </ul>
+                    {context.authenticated || !context.adminAuthenticated && <ul className='flex space-x-4 mt-5 mr-10 font-bold text-lg'>
+                        {context.authenticated || !context.adminAuthenticated && <Link to='/addRestaurant'><li>Add Restaurant</li></Link> }
+                        {context.authenticated || !context.adminAuthenticated && <Link to={`/foodiego/restaurantlogin`}><li >My Restaurant</li></Link> }
+                    </ul> }
                 </div>
                     
             </header>

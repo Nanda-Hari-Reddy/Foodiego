@@ -6,9 +6,12 @@ export const useMyContext = () => useContext(context)
 const ContextProvider = ({children}) =>
 {
     const [authenticated, setAuthenticated] = useState(false)
+    const [adminAuthenticated, setIsAdminAuthenticated] = useState(false)
     const [theme, setTheme] = useState(false);
     const user = "hari@gmail.com"
     const [userDetails, setUserDetails] = useState(null)
+    const [admin, setAdmin] = useState('')
+    const [adminPassword, setAdminPassword] = useState('')
     const logIn = (username, password) =>
     {
         if((username==='hari@gmail.com' && password==="WASDskal") || (username==='reddy@gmail.com' && password==="WASDskal"))
@@ -30,9 +33,25 @@ const ContextProvider = ({children}) =>
             return false;
         }
     }
+
+    const adminLogIn = (username, password) =>
+    {
+        if(username === "eat@rayalaseemaspice.com" && password === "Rayalaseema Spice")
+        {
+            setIsAdminAuthenticated(true)
+            setAdmin(username)
+            setAdminPassword(password)
+            return true
+        }
+        else 
+        {
+            setIsAdminAuthenticated(false)
+            return false;
+        }
+    }
     
     return(
-        < context.Provider value={ {authenticated, setAuthenticated, theme, setTheme, logIn, userDetails, setUserDetails } }>
+        < context.Provider value={ {authenticated, setAuthenticated, theme, setTheme, logIn, userDetails, setUserDetails, admin, setAdmin, adminAuthenticated, setIsAdminAuthenticated} }>
             {children}
         </context.Provider>
     )
