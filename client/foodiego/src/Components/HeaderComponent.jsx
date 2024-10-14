@@ -61,11 +61,10 @@ const HeaderComponent = () =>
                         aria-label="Toggle high contrast mode">{theme ? <BsFillMoonFill /> : <BsFillMoonFill /> }</button></li> }
                     </ul>
                     {context.authenticated || !context.adminAuthenticated && <ul className='flex space-x-4 mt-5 mr-10 font-bold text-lg'>
-                        {context.authenticated || !context.adminAuthenticated && <Link to='/addRestaurant'><li>Add Restaurant</li></Link> }
-                        {context.authenticated || !context.adminAuthenticated && <Link to={`/foodiego/restaurantlogin`}><li >My Restaurant</li></Link> }
+                        <Link to='/addRestaurant'><li>Add Restaurant</li></Link> 
+                        <Link to={`/foodiego/restaurantlogin`}><li >My Restaurant</li></Link>
                     </ul> }
                 </div>
-                    
             </header>
         </div>
     )

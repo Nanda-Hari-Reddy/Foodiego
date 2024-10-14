@@ -39,7 +39,7 @@ const RestaurantAddSuccess = () => {
           </p>
         </div>
 
-        <div className="space-y-4 ml-28">        
+        <div className="space-y-4 ml-28">      
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
