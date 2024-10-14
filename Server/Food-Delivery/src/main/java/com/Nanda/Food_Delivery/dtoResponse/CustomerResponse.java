@@ -32,6 +32,8 @@ public class CustomerResponse {
 	int id;
 
 	String name;
+	
+	String imageURL;
 
 	String email;
 

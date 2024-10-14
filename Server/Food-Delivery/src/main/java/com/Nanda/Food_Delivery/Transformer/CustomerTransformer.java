@@ -9,15 +9,15 @@ import com.Nanda.Food_Delivery.dtoResponse.CustomerResponse;
 public class CustomerTransformer
 {
 
-	public static Customer requestToEntity(CustomerRequest customerRequest)
+	public static Customer requestToEntity(CustomerRequest request)
 	{
 		Customer customer = Customer.builder()
-							.id(customerRequest.getId())
-							.name(customerRequest.getName())
-							.email(customerRequest.getEmail())
-							.password(customerRequest.getPassword())
-							.gender(customerRequest.getGender())
-							.mobileNo(customerRequest.getMobileNo())
+							.id(request.getId())
+							.name(request.getName())
+							.email(request.getEmail())
+							.password(request.getPassword())
+							.gender(request.getGender())
+							.mobileNo(request.getMobileNo())
 							.build();
 		return customer;
 	}
@@ -35,6 +35,7 @@ public class CustomerTransformer
 											.toList()))
 							.gender(entity.getGender())
 							.mobileNo(entity.getMobileNo())
+							.imageURL(entity.getImageURL())
 							.cartResponse(CartTransformer.entityToResponse(entity.getCart()))
 							.build();
 		return customerResponse;

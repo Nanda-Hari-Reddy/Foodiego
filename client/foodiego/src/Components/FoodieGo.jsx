@@ -13,6 +13,7 @@ import RestaurantAddSuccess from "./RestaurantAddSuccess"
 import MyRestaurant from "./MyRestaurant"
 import AddRestaurant from "./AddRestaurant"
 import RestaurantAdminLoginPage from "./RestaurantAdminLoginPage"
+import UserDetails from "./UserDetails"
 
 
 const AuthenticatdRoute = ({ children }) =>
@@ -45,6 +46,7 @@ const FoodieGo = () =>
                             <Route path="/foodieGo/home" element={<AuthenticatdRoute><HomePage /></AuthenticatdRoute>}/>
                             <Route path="/foodieGo/restaurant/:restaurantId" element={<AuthenticatdRoute><Restaurant restaurantId={restaurantId}/></AuthenticatdRoute>}/>
                             <Route path="/foodieGo/cart" element={<AuthenticatdRoute><Cart/></AuthenticatdRoute>}/>
+                            <Route path="/foodiego/myprofile" element={<AuthenticatdRoute><UserDetails /></AuthenticatdRoute>} />
                             <Route path="/foodieGo/delivery/:arrayString" element={<AuthenticatdRoute><Delivery /></AuthenticatdRoute>}/>
                             <Route path="/foodiego/delivery/payment/:arrayString" element={<AuthenticatdRoute><PaymentOptions /></AuthenticatdRoute>}></Route>
                             <Route path="/foodiego/delivery/payment/order_details/:arrayString" element={<AuthenticatdRoute><OrderDetails /></AuthenticatdRoute>}></Route>

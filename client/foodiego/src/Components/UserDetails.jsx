@@ -2,20 +2,28 @@ import React, { useState, useEffect } from "react";
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCreditCard, FaClock } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useMyContext } from "./Security/ContextProvider";
+import { retrieveUser, updateUser, updateuserProfilePic } from "./api/foodiegoAPI";
 
-const UserProfile = () => {
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "johndoe@example.com",
-    phone: "+1 (555) 123-4567",
-    address: "123 Main St, Anytown, USA",
-    paymentMethod: "Credit Card",
-    deliveryTime: "18:00",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-  });
-
+const UserDetails = () => {
+  const context = useMyContext()
+  const [user, setUser] = useState(null)
   const [errors, setErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  const [isOpenForImageChange, setIsOpenForImageChange] = useState(false)
+
+  const getUser = () =>
+  { 
+    retrieveUser(context.userDetails.email)
+    .then((response) => 
+                        {
+                            console.log(response)
+                            setUser(response.data)
+                        })
+    .catch((error) => console.log(error))
+  }
+
+  useEffect(() => getUser(), [])
 
   useEffect(() => {
     validateForm();
@@ -26,20 +34,41 @@ const UserProfile = () => {
     setUser({ ...user, [name]: value });
   };
 
+  var count  = 0
   const validateForm = () => {
     let errors = {};
-    if (!user.name.trim()) errors.name = "Name is required";
-    if (!/^\S+@\S+\.\S+$/.test(user.email)) errors.email = "Invalid email format";
-    if (!/^\+?[1-9]\d{1,14}$/.test(user.phone)) errors.phone = "Invalid phone number";
-    if (!user.address.trim()) errors.address = "Address is required";
+    if (!user?.name.trim()) errors.name = "Name is required";
+    if (!/^\S+@\S+\.\S+$/.test(user?.email)) errors.email = "Invalid email format";
+    if (!/^\+?[1-9]\d{1,14}$/.test(user?.mobileNo)) errors.mobileNo = "Invalid phone number";
+    if (!user?.gender.trim()) errors.gender = "gender is required";
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
+
+  const togglePopUp = () =>
+  {
+    setIsOpenForImageChange(!isOpenForImageChange)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
       setIsEditing(false);
+      const usr = {
+        imageURL: user?.imageURL,
+        name: user?.name,
+        email: user?.email,
+        password: user?.password,
+        mobileNo: user?.mobileNo,
+        gender: user?.gender,
+        addressRequest: {
+          street: "",
+          area: "",
+          city: ""
+      }}
+      updateUser(context.userDetails.id, usr)
+      .then(( response ) => console.log(response))
+      .catch( (error) => console.log(error))
       toast.success("Profile updated successfully!");
     } else {
       toast.error("Please correct the errors before submitting.");
@@ -50,17 +79,21 @@ const UserProfile = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg transition-all duration-300 ease-in-out">
       <ToastContainer position="top-right" autoClose={3000} />
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">User Profile</h1>
-      <div className="flex flex-col md:flex-row items-center mb-6">
+      <div className="flex flex-col md:flex-column items-center mb-6">
         <div className="w-32 h-32 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6">
+        <button>
+          { isOpenForImageChange && <PopupForProfileImageChange handleClose={togglePopUp} user = {user} setUser={setUser} setIsOpenForImageChange= {setIsOpenForImageChange} /> }
           <img
-            src={user.avatar}
+            src={user?.imageURL}
             alt="User Avatar"
+            onClick={ togglePopUp }
             className="w-full h-full object-cover"
           />
+          </button>
         </div>
         <div className="flex-1">
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-5">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   <FaUser className="inline mr-2" />
@@ -70,7 +103,7 @@ const UserProfile = () => {
                   type="text"
                   id="name"
                   name="name"
-                  value={user.name}
+                  value={user?.name}
                   onChange={handleInputChange}
                   disabled={!isEditing}
                   className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${isEditing ? "bg-white" : "bg-gray-100"}`}
@@ -92,7 +125,7 @@ const UserProfile = () => {
                   type="email"
                   id="email"
                   name="email"
-                  value={user.email}
+                  value={user?.email}
                   onChange={handleInputChange}
                   disabled={!isEditing}
                   className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${isEditing ? "bg-white" : "bg-gray-100"}`}
@@ -112,78 +145,61 @@ const UserProfile = () => {
                 </label>
                 <input
                   type="tel"
-                  id="phone"
-                  name="phone"
-                  value={user.phone}
+                  id="mobileNo"
+                  name="mobileNo"
+                  value={user?.mobileNo}
                   onChange={handleInputChange}
                   disabled={!isEditing}
                   className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${isEditing ? "bg-white" : "bg-gray-100"}`}
-                  aria-invalid={errors.phone ? "true" : "false"}
+                  aria-invalid={errors.mobileNo ? "true" : "false"}
                   aria-describedby="phone-error"
                 />
-                {errors.phone && (
+                {errors.mobileNo && (
                   <p id="phone-error" className="mt-1 text-sm text-red-600">
-                    {errors.phone}
+                    {errors.mobileNo}
                   </p>
                 )}
               </div>
               <div>
                 <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                   <FaMapMarkerAlt className="inline mr-2" />
-                  Address
+                  Gender
                 </label>
                 <input
                   type="text"
-                  id="address"
-                  name="address"
-                  value={user.address}
+                  id="gender"
+                  name="gender"
+                  value={user?.gender}
                   onChange={handleInputChange}
                   disabled={!isEditing}
                   className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${isEditing ? "bg-white" : "bg-gray-100"}`}
-                  aria-invalid={errors.address ? "true" : "false"}
-                  aria-describedby="address-error"
+                  aria-invalid={errors.gender ? "true" : "false"}
+                  aria-describedby="gender-error"
                 />
-                {errors.address && (
+                {errors.gender && (
                   <p id="address-error" className="mt-1 text-sm text-red-600">
-                    {errors.address}
+                    {errors.gender}
                   </p>
                 )}
               </div>
-              <div>
-                <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-700">
-                  <FaCreditCard className="inline mr-2" />
-                  Payment Method
-                </label>
-                <select
-                  id="paymentMethod"
-                  name="paymentMethod"
-                  value={user.paymentMethod}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${isEditing ? "bg-white" : "bg-gray-100"}`}
-                >
-                  <option value="Credit Card">Credit Card</option>
-                  <option value="PayPal">PayPal</option>
-                  <option value="Cash">Cash</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="deliveryTime" className="block text-sm font-medium text-gray-700">
-                  <FaClock className="inline mr-2" />
-                  Preferred Delivery Time
-                </label>
-                <input
-                  type="time"
-                  id="deliveryTime"
-                  name="deliveryTime"
-                  value={user.deliveryTime}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 ${isEditing ? "bg-white" : "bg-gray-100"}`}
-                />
-              </div>
             </div>
-            <div className="flex justify-end space-x-4">
+            <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">My Address</h1>
+              { 
+                user?.addressResponse?.map( (item ) => (
+                  <div key={item.id} className="bg-gray-50 rounded-lg  relative flex flex-row justify-start space-x-4">
+                    {/* <h1>street : {item.street}</h1> */}
+                    <p className="font-bold">{++count}</p>
+                    <label htmlFor="street" className="font-bold ">Street</label>
+                    <input type="text" name="street" id="street" value={item.street} />
+                    <label htmlFor="area" className="font-bold">area</label>
+                    <input type="text" name="area" id="area" value={item.area} />
+                    <label htmlFor="city" className="font-bold">city</label>
+                    <input type="text" name="city" id="city" value={item.city} />
+                    {/* <h1>area : {item.area}</h1> */}
+                    {/* <h1>city : {item.city}</h1> */}
+                  </div>
+                ))}
+            <div className="flex justify-center space-x-4">
               {!isEditing ? (
                 <button
                   type="button"
@@ -217,4 +233,42 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;ss
+export default UserDetails;
+export const PopupForProfileImageChange = ({ setIsOpenForImageChange, user, setUser }) =>
+  {
+        const handleChange = (value) =>
+        {
+          setUser({ ...user, imageURL : value });
+        }
+        const handleClose = () =>
+          {
+              updateuserProfilePic(user?.id, user?.imageURL)
+              .then( (response) => 
+                                    {
+                                      console.log(user?.imageURL) 
+                                      console.log(response) 
+                                      setIsOpenForImageChange(false)
+                                    })
+              .catch( (error) => 
+                                    {
+                                      console.log(error) 
+                                      setIsOpenForImageChange(false)
+                                    })
+          }
+      return (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full ">
+            <h2 className="text-xl font-bold m-5">Change Profile Picture</h2>
+            <input type="text" 
+                  value={user?.imageURL}
+                  onChange={(e) => handleChange(e.target.value)}
+                  className="mb-4 p-3 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  placeholder="Image URL"
+            />
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+              onClick={handleClose}> OK </button>
+          </div>
+        </div>
+      );
+  };
