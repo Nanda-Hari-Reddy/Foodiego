@@ -44,7 +44,7 @@ public class FoodDeliveryApplication
 		.sessionManagement(
 			session -> session.sessionCreationPolicy
 			(SessionCreationPolicy.STATELESS))
-//		.csrf(csrf -> csrf.disable()) 
+		.csrf(csrf -> csrf.disable()) 
 		.build();
 	}
 	
