@@ -73,12 +73,13 @@ public class CustomerService
 		return customerResponseList;
 	}
 	
-	public CustomerResponse updateCustomer(int customerId, CustomerRequest customeerERequest)
+	public CustomerResponse updateCustomer(int customerId, CustomerRequest customerRequest)
 	{
-		Customer customer = CustomerTransformer.requestToEntity(customeerERequest);
+		Customer customer = CustomerTransformer.requestToEntity(customerRequest);
 		customer.setId(customerId);
 		Optional<Customer> ctmr = customerRepository.findById(customerId);
 		if(ctmr.isEmpty()) throw new UserNotFoundException("No user found with id "+customerId);
+		customer.setPassword(ctmr.get().getPassword());
 		customerRepository.save(customer);
 		CustomerResponse customerResponse = CustomerTransformer.entityToResponse(customer);
 		return customerResponse;
@@ -91,5 +92,18 @@ public class CustomerService
 		customerRepository.deleteById(customerId);
 		CustomerResponse customerResponse = CustomerTransformer.entityToResponse(customer.get());
 		return customerResponse;
+	}
+
+	public boolean updateProfilePic(int userId, String imageURL) 
+	{
+		Optional<Customer> customer =  customerRepository.findById(userId);
+		if(customer.isEmpty()) throw new UserNotFoundException("No user found with id "+ userId);
+		Customer ctmr = customer.get();
+		ctmr.setImageURL(imageURL);
+		customerRepository.save(ctmr);
+		System.out.println(imageURL+"DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+		System.out.println(ctmr.getImageURL());
+
+		return true;
 	}
 }

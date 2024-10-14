@@ -27,6 +27,8 @@ public class CustomerRequest
     @JsonIgnore
 	int id;
 
+    String imageURL;
+    
 	String name;
 
 	String email;

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react"
-import { retrieveUser } from "../api/foodiegoAPI";
+import { authenticateUser, retrieveUser } from "../api/foodiegoAPI";
+import { apiClient } from "../api/BaseURL";
 const context = createContext();
 export const useMyContext = () => useContext(context)
 
@@ -12,25 +13,31 @@ const ContextProvider = ({children}) =>
     const [userDetails, setUserDetails] = useState(null)
     const [admin, setAdmin] = useState('')
     const [adminPassword, setAdminPassword] = useState('')
-    const logIn = (username, password) =>
+    const logIn =  async (username, password) =>
     {
-        if((username==='hari@gmail.com' && password==="WASDskal") || (username==='reddy@gmail.com' && password==="WASDskal"))
-        {
-            setAuthenticated(true)
-
-            retrieveUser(user)
-            .then(( response ) => {
-                setUserDetails(response.data)
-                console.log(response.data)})
-            
-            .catch(( error) => console.log(error))
-            
-            return true
-        }
-        else 
-        {
+        const token = "Basic "+ window.btoa(username+ ":"+password)
+        try {
+                const response = await authenticateUser(token)
+                if(response.status==200)
+                {
+                    setAuthenticated(true)
+                    apiClient.interceptors.request.use(
+                        (config) => {
+                            config.headers.Authorization = token
+                            return config
+                        }
+                    )
+                    retrieveUser(user)
+                    .then(( response ) => {
+                        setUserDetails(response.data)
+                        console.log(response.data)})
+                    .catch(( error) => console.log(error))
+                    return true
+                }
+        } catch (error) {
             setAuthenticated(false)
-            return false;
+            console.log(error)
+            return false
         }
     }
 

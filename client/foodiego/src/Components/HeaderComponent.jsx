@@ -54,7 +54,7 @@ const HeaderComponent = () =>
                     </ul>
                     <ul className='flex space-x-4 mt-10'>
                     { context.authenticated && <li><Link to='/foodieGo/cart'className="hover:underline"><BsCartCheck size={24} className='mb-10'/></Link></li> }
-                    { context.authenticated && <li><a href="#" className="hover:underline"><BsPerson size={24}className='mb-10' /></a></li> }
+                    { context.authenticated && <Link to={`/foodiego/myprofile`}><li><a href="#" className="hover:underline"><BsPerson size={24}className='mb-10' /></a></li></Link> }
                     { context.authenticated && <li><button
                         onClick={toggleHighContrast}
                         className={`${theme ? 'bg-black text-white' : 'bg-white text-black'} px-4 py-2 rounded`}

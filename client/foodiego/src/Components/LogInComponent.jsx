@@ -13,7 +13,7 @@ const Login = () => {
   const myContext = useMyContext()
   const theme = myContext.theme
   
-  const validateForm = () => {
+  const validateForm =  async () => {
     let formErrors = {};
     if (!username) formErrors.username = 'Username is required';
     if (!password) formErrors.password = 'Password is required';

@@ -1,7 +1,13 @@
 import { apiClient } from './BaseURL'
-
+export const authenticateUser = (token) => apiClient.get('/authenticate',
+    {
+        headers : { Authorization : token }
+    }
+)
 export const retrieveUser = (email) => apiClient.get(`/user/getUser`,{ params : { email } })
-export  const retrieveDataForHomePage = () => apiClient.get(`/home`)
+export const updateUser = (userId, user) => apiClient.put(`/user/${userId}`, user)
+export const updateuserProfilePic = (userId, imageURL) => apiClient.patch(`/user/${userId}`, { imageURL } )
+export const retrieveDataForHomePage = () => apiClient.get(`/home`)
 export const retrieveRestaurant = (restaurantId) => apiClient.get(`/restaurants/${ restaurantId }`)
 export const retrieveMostOrdersForRestaurant = (rsntId) => apiClient.get(`/restaurants/${rsntId}/mostOrders`)
 export const retrieveMenu = (restaurantId) => apiClient.get(`/restaurants/${restaurantId}/menu`)

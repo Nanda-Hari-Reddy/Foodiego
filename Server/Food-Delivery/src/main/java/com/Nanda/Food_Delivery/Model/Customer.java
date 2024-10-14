@@ -43,6 +43,8 @@ public class Customer
     @NotEmpty
     @Size(max = 40, message = "Name Should be under 40 letters")
     String name;
+    
+    String imageURL;
 
     @Email
     @Column(unique = true)
