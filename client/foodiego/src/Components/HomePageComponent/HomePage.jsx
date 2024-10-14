@@ -12,7 +12,6 @@ import { retrieveDataForHomePage } from '../api/foodiegoAPI';
 const HomePage = () => {
 
   const context = useMyContext()
-  context.setIsAdminAuthenticated(false)
   const theme = context.theme
   const [restaurants, setRestaurants] = useState([])
   const [foods, setFoods] = useState([])

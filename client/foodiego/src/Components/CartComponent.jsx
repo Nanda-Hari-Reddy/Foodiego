@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { flushSync } from 'react-dom';
 import { Link,useNavigate } from 'react-router-dom'
 import { FaTrash, FaPlus, FaMinus, FaMapMarkerAlt } from 'react-icons/fa';
 import { FaArrowRight } from "react-icons/fa";
