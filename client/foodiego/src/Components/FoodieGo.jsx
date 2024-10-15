@@ -14,6 +14,7 @@ import MyRestaurant from "./MyRestaurant"
 import AddRestaurant from "./AddRestaurant"
 import RestaurantAdminLoginPage from "./RestaurantAdminLoginPage"
 import UserDetails from "./UserDetails"
+import UserRegestration from "./UserRegestration"
 
 
 const AuthenticatdRoute = ({ children }) =>
@@ -39,6 +40,7 @@ const FoodieGo = () =>
                         <Route>
                             <Route path="/foodiego" element={< Login />}/>
                             <Route path="/login" element={< Login />}/>
+                            <Route path="/foodiegi/register" element ={< UserRegestration />}></Route>
                             <Route path="/addRestaurant" element = {<AddRestaurant />} />
                             <Route path="/foodiego/restaurantlogin" element={< RestaurantAdminLoginPage  />}/>
                             <Route path="/foodiego/myrestaurant" element={< MyRestaurant  />}/>

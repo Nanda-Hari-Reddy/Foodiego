@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react"
-import { authenticateUser, retrieveUser } from "../api/foodiegoAPI";
+import { authenticateUser, getcsrf, retrieveUser } from "../api/foodiegoAPI";
 import { apiClient } from "../api/BaseURL";
 const context = createContext();
 export const useMyContext = () => useContext(context)
@@ -27,7 +27,8 @@ const ContextProvider = ({children}) =>
                             return config
                         }
                     )
-                    retrieveUser(user)
+
+                    retrieveUser(username)
                     .then(( response ) => {
                         setUserDetails(response.data)
                         console.log(response.data)})

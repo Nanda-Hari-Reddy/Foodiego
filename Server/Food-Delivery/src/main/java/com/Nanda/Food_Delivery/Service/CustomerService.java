@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.Nanda.Food_Delivery.Model.Cart;
@@ -18,19 +19,22 @@ import com.Nanda.Food_Delivery.exception.UserNotFoundException;
 @Service
 public class CustomerService
 {
-	CustomerRepository customerRepository;
-	DeliveryAddressService addressService;
-	
-	public CustomerService(CustomerRepository customerRepository, DeliveryAddressService addressService) {
+	private CustomerRepository customerRepository;
+	private DeliveryAddressService addressService;
+	private PasswordEncoder passwordEncoder;
+	public CustomerService(CustomerRepository customerRepository, DeliveryAddressService addressService, PasswordEncoder passwordEncoder) {
 		super();
 		this.customerRepository = customerRepository;
 		this.addressService = addressService;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public CustomerResponse addCustomer(CustomerRequest customerRequest)
 	{
+		System.out.println(customerRequest+" ))))))))))))))))))))))))))))))))))");
+		String password = passwordEncoder.encode(customerRequest.getPassword());
 		Customer customer = CustomerTransformer
-							.requestToEntity(customerRequest);
+							.requestToEntity(customerRequest, password);
 		Cart cart = new Cart();
 		customer.setCart(cart);
 		cart.setCustomer(customer);
@@ -75,9 +79,11 @@ public class CustomerService
 	
 	public CustomerResponse updateCustomer(int customerId, CustomerRequest customerRequest)
 	{
-		Customer customer = CustomerTransformer.requestToEntity(customerRequest);
-		customer.setId(customerId);
+		
 		Optional<Customer> ctmr = customerRepository.findById(customerId);
+		String password = passwordEncoder.encode(ctmr.get().getPassword());
+		Customer customer = CustomerTransformer.requestToEntity(customerRequest, password);
+		customer.setId(customerId);
 		if(ctmr.isEmpty()) throw new UserNotFoundException("No user found with id "+customerId);
 		customer.setPassword(ctmr.get().getPassword());
 		customerRepository.save(customer);
@@ -101,9 +107,6 @@ public class CustomerService
 		Customer ctmr = customer.get();
 		ctmr.setImageURL(imageURL);
 		customerRepository.save(ctmr);
-		System.out.println(imageURL+"DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-		System.out.println(ctmr.getImageURL());
-
 		return true;
 	}
 }

@@ -12,10 +12,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import jakarta.activation.DataSource;
+
 @SpringBootApplication
 public class FoodDeliveryApplication 
 {	
-
+	
+	public static void main(String[] args)
+	{
+		SpringApplication.run(FoodDeliveryApplication.class, args);
+	}
+	
 	@Bean
 	public WebMvcConfigurer corsConfigurer()
 	{
@@ -28,29 +35,6 @@ public class FoodDeliveryApplication
 				.allowedOrigins("http://localhost:3000");
 			}
 		};
-	}
-	
-	@Bean
-	public SecurityFilterChain configuresecurityfilters(HttpSecurity http) throws Exception
-	{
-		return http
-		.authorizeHttpRequests(
-			auth -> 
-				auth
-				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.anyRequest().authenticated()
-			)
-		.httpBasic(Customizer.withDefaults())
-		.sessionManagement(
-			session -> session.sessionCreationPolicy
-			(SessionCreationPolicy.STATELESS))
-		.csrf(csrf -> csrf.disable()) 
-		.build();
-	}
-	
-	public static void main(String[] args)
-	{
-		SpringApplication.run(FoodDeliveryApplication.class, args);
 	}
 	
 	@Bean
