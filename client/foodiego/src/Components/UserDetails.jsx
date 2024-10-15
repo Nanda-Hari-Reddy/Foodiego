@@ -37,10 +37,10 @@ const UserDetails = () => {
   var count  = 0
   const validateForm = () => {
     let errors = {};
-    if (!user?.name.trim()) errors.name = "Name is required";
+    if (!user?.name?.trim()) errors.name = "Name is required";
     if (!/^\S+@\S+\.\S+$/.test(user?.email)) errors.email = "Invalid email format";
     if (!/^\+?[1-9]\d{1,14}$/.test(user?.mobileNo)) errors.mobileNo = "Invalid phone number";
-    if (!user?.gender.trim()) errors.gender = "gender is required";
+    if (!user?.gender?.trim()) errors.gender = "gender is required";
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -66,6 +66,7 @@ const UserDetails = () => {
           area: "",
           city: ""
       }}
+      console.log(usr?.password+" usr")
       updateUser(context.userDetails.id, usr)
       .then(( response ) => console.log(response))
       .catch( (error) => console.log(error))

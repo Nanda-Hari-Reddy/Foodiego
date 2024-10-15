@@ -2,20 +2,23 @@ package com.Nanda.Food_Delivery.Transformer;
 
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.Nanda.Food_Delivery.Model.Customer;
 import com.Nanda.Food_Delivery.dtoRequests.CustomerRequest;
 import com.Nanda.Food_Delivery.dtoResponse.CustomerResponse;
 
 public class CustomerTransformer
 {
-
-	public static Customer requestToEntity(CustomerRequest request)
+	public static Customer requestToEntity(CustomerRequest request, String password)
 	{
 		Customer customer = Customer.builder()
 							.id(request.getId())
 							.name(request.getName())
 							.email(request.getEmail())
-							.password(request.getPassword())
+							.imageURL(request.getImageURL())
+							.password(password)
 							.gender(request.getGender())
 							.mobileNo(request.getMobileNo())
 							.build();

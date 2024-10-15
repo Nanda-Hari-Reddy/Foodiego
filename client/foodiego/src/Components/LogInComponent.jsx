@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaFacebook, FaGoogle, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useMyContext } from './Security/ContextProvider';
 
 const Login = () => {
@@ -151,13 +151,13 @@ const Login = () => {
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Don't have an account?{' '}
-            <button
+            <Link to={"/foodiegi/register"} ><button
               type="button"
               onClick={handleSignUp}
               className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150"
             >
               Sign up
-            </button>
+            </button></Link>
           </p>
         </div>
       </motion.div>

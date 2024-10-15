@@ -4,6 +4,7 @@ export const authenticateUser = (token) => apiClient.get('/authenticate',
         headers : { Authorization : token }
     }
 )
+export const addUser = (user) => apiClient.post(`/user`, user)
 export const retrieveUser = (email) => apiClient.get(`/user/getUser`,{ params : { email } })
 export const updateUser = (userId, user) => apiClient.put(`/user/${userId}`, user)
 export const updateuserProfilePic = (userId, imageURL) => apiClient.patch(`/user/${userId}`, { imageURL } )
