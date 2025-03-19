@@ -56,7 +56,7 @@ public class RestaurantController
 		errorDetails.setTimestamp(LocalDateTime.now());
 	}
 
-	@PostMapping
+	@PostMapping	
 	public ResponseEntity<EntityModel<RestaurantResponse>> addRestaurant(@RequestBody RestaurantRequest restaurantRequest)
 	{
 		if(restaurantRequest==null) return new ResponseEntity(errorDetails, HttpStatus.NOT_ACCEPTABLE);
@@ -148,6 +148,7 @@ public class RestaurantController
 		{
 			return ResponseEntity.ok().build();
 		}
+		System.out.println(restaurantService.validateAdmin(adminRequest));
 		return ResponseEntity.notFound().build();
 	}
 }
